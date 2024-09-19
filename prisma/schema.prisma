@@ -13,10 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Resturent {
+model Restaurant {
   id String @unique @default(uuid())
   name String
-
+  phone String?
+  location String?
   
 
   foodPacks FoodPack[]
@@ -28,6 +29,9 @@ model Resturent {
 model Employee {
   id String @unique @default(uuid())
   name String
+  designation String?
+  phone String?
+  
 
   votes Vote[]
   
@@ -37,9 +41,11 @@ model Employee {
 
 model FoodPack{
   id String @unique @default(uuid())
+  title String
+  description String?
 
-  resturentId String
-  resturent Resturent @relation(fields: [resturentId],references: [id])
+  restaurantId String
+  restaurant Restaurant @relation(fields: [restaurantId],references: [id])
 
   votes Vote[] 
 
@@ -50,13 +56,13 @@ model FoodPack{
 model Vote{
   // id String @unique @default(uuid())
 
-  emoployeeId String
-  employee Employee  @relation(fields: [emoployeeId],references: [id])
+  employeeId String
+  employee Employee  @relation(fields: [employeeId],references: [id])
 
   foodPackId String
   foodPack FoodPack  @relation(fields: [foodPackId],references: [id])
 
-  @@id([emoployeeId,foodPackId])
+  @@id([employeeId,foodPackId])
 
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt

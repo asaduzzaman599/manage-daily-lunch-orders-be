@@ -1,9 +1,20 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { FoodpacksModule } from './foodpacks/foodpacks.module';
+import { VotesModule } from './votes/votes.module';
+import { EmployeesModule } from './employees/employees.module';
+import { RestaurantModule } from './restaurant/restaurant.module';
+import { PrismaModule } from './prisma.module';
 
 @Module({
-  imports: [],
+  imports: [
+    FoodpacksModule,
+    VotesModule,
+    EmployeesModule,
+    RestaurantModule,
+    PrismaModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
