@@ -1,7 +1,18 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  DefaultValuePipe,
+} from '@nestjs/common';
 import { VotesService } from './votes.service';
 import { CreateVoteDto } from './dto/create-vote.dto';
 import { UpdateVoteDto } from './dto/update-vote.dto';
+import { ArgsVoteDto } from './dto/args-vote.dto'
 
 @Controller('votes')
 export class VotesController {
@@ -13,8 +24,22 @@ export class VotesController {
   }
 
   @Get()
-  findAll() {
-    return this.votesService.findAll();
+  findAll(
+    @Query('employeeId') employeeId: string,
+    @Query('foodPackId') foodPackId: string,
+    @Query('startDate') startDate: string,
+    @Query('endDate') endDate: string,
+  ) {
+    const query: ArgsVoteDto = {};
+    if (employeeId) query.employeeId = employeeId;
+    if (foodPackId) query.foodPackId = foodPackId;
+
+    return this.votesService.findAll(query);
+  }
+
+  @Get('/top-voted')
+  async findTopVoted() {
+    return await this.votesService.findTopVoted();
   }
 
   @Get(':id')
@@ -29,6 +54,6 @@ export class VotesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.votesService.remove(+id);
+    return this.votesService.remove(id);
   }
 }

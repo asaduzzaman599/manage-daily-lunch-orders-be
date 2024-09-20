@@ -25,6 +25,11 @@ export class FoodpacksController {
     return this.foodpacksService.findAll();
   }
 
+  @Get('/top-voted')
+  findTopVotedFoodItem() {
+    return this.foodpacksService.topVotedFoodItem();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.foodpacksService.findOne(id);

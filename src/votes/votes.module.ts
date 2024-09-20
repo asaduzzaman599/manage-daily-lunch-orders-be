@@ -7,5 +7,6 @@ import { VotesService } from './votes.service';
   imports: [PrismaModule],
   controllers: [VotesController],
   providers: [VotesService],
+  exports: [VotesService],
 })
 export class VotesModule {}

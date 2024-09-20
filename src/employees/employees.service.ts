@@ -2,12 +2,29 @@ import { Injectable } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { PrismaService } from 'src/prisma.service';
+import { LoginEmployeeDto } from './dto/login-employee.dto';
 
 @Injectable()
 export class EmployeesService {
   constructor(private prisma: PrismaService) {}
-  create(createEmployeeDto: CreateEmployeeDto) {
-    return this.prisma.employee.create({ data: createEmployeeDto });
+  async create(createEmployeeDto: CreateEmployeeDto) {
+    const employee = await this.prisma.employee.create({
+      data: createEmployeeDto,
+    });
+    const { password, ...data } = employee;
+    return data;
+  }
+
+  async login({ phone, password }: LoginEmployeeDto) {
+    const employee = await this.prisma.employee.findUnique({
+      where: { phone },
+    });
+    if (!employee) throw new Error('Invalid Phone Number');
+
+    if (employee.password !== password)
+      throw new Error('Email or Password not match!');
+    const { password: ignore, ...user } = employee;
+    return { user, status: true, message: 'Logged In' };
   }
 
   findAll() {

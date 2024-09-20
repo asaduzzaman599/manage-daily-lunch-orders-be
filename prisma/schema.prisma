@@ -14,56 +14,81 @@ datasource db {
 }
 
 model Restaurant {
-  id String @unique @default(uuid())
-  name String
-  phone String?
+  id       String  @unique @default(uuid())
+  name     String @unique
+  phone    String?
   location String?
-  
 
   foodPacks FoodPack[]
 
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  updateAt  DateTime @updatedAt
 }
 
 model Employee {
-  id String @unique @default(uuid())
-  name String
+  id          String  @unique @default(uuid())
+  name        String
   designation String?
-  phone String?
-  
+  phone       String @unique
+  password String?
 
   votes Vote[]
-  
+
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  updateAt  DateTime @updatedAt
 }
 
-model FoodPack{
-  id String @unique @default(uuid())
-  title String
+model FoodPack {
+  id          String  @unique @default(uuid())
+  title       String 
   description String?
 
   restaurantId String
-  restaurant Restaurant @relation(fields: [restaurantId],references: [id])
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
 
-  votes Vote[] 
+  foodPackWithMeal   FoodPackWithMeal[]
+
+  votes Vote[]
 
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  updateAt  DateTime @updatedAt
 }
 
-model Vote{
-  // id String @unique @default(uuid())
-
-  employeeId String
-  employee Employee  @relation(fields: [employeeId],references: [id])
-
+model FoodPackWithMeal {
   foodPackId String
-  foodPack FoodPack  @relation(fields: [foodPackId],references: [id])
+  foodPack   FoodPack @relation(fields: [foodPackId], references: [id])
 
-  @@id([employeeId,foodPackId])
+  mealId String
+  meal   Meal   @relation(fields: [mealId], references: [id])
 
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  updateAt  DateTime @updatedAt
+
+  @@id([foodPackId, mealId])
+}
+
+model Meal {
+  id    String  @unique @default(uuid())
+  title String 
+  price Int
+
+
+  restaurantId String
+  foodPackWithMeal   FoodPackWithMeal[]
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model Vote {
+  id String @unique @default(uuid())
+
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id])
+
+  foodPackId String
+  foodPack   FoodPack @relation(fields: [foodPackId], references: [id])
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
 }

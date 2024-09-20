@@ -1,5 +1,6 @@
 export class CreateEmployeeDto {
   name: string;
-  phone?: string;
+  phone: string;
   designation?: string;
+  password: string;
 }
