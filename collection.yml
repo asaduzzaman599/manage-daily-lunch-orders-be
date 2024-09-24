@@ -1,0 +1,235 @@
+openapi: 3.0.0
+info:
+  title: manage-daily-lunch
+  version: 1.0.0
+servers:
+  - url: http://{{dev}}
+components:
+  securitySchemes:
+    apikeyAuth:
+      type: http
+      scheme: apikey
+security:
+  - apikeyAuth: []
+tags:
+  - name: Restaurant
+    description: >-
+      The `/collections` endpoints let you manage your
+      [collections](https://learning.postman.com/docs/sending-requests/intro-to-collections/).
+  - name: Food Pack
+  - name: Meal
+  - name: Vote
+  - name: Employee
+paths:
+  /restaurant:
+    post:
+      tags:
+        - Restaurant
+      summary: Create a collection
+      description: >-
+        Creates a collection using the [Postman Collection v2 schema
+        format](https://schema.postman.com/json/collection/v2.1.0/docs/index.html).
+        Include a `collection` object in the request body that contains the
+        following required properties:
+
+
+        *   `info` — An **object** that contains the following properties:
+            *   `name` — A **string** value that contains the collection's name.
+            *   `schema` — A **string** that contains a URL to the collection's schema. For example, the `https://schema.getpostman.com/collection/v1` URL.
+        *   `item` — An **object** that contains the HTTP request and response
+        information.
+            *   `request` — An **object** that contains the collection's request information. For a complete list of values, refer to the `definitions.request` entry in the [collection.json schema file](https://schema.postman.com/json/collection/v2.1.0/collection.json). If you pass an empty object for this value, the system defaults to an untitled GET request.
+
+        **Note:**
+
+
+        *   For a complete list of available property values for this endpoint,
+        use the following references available in the [collection.json schema
+        file](https://schema.postman.com/json/collection/v2.1.0/collection.json):
+            *   `info` object — Use the `definitions.info` entry.
+            *   `item` object — Use the `definitions.items` entry.
+        *   For all other possible values, refer to the [collection.json schema
+        file](https://schema.postman.com/json/collection/v2.1.0/collection.json).
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+              example: >-
+                "{\n    \"name\": \"test\",\n    \"phone\": \"111111\",\n   
+                \"location\": \"matikata Dhaka\"\n}"
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Restaurant
+      summary: Get all collections
+      description: >-
+        Gets all of your
+        [collections](https://www.getpostman.com/docs/collections). The response
+        includes all of your subscribed collections.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /foodpacks:
+    post:
+      tags:
+        - Food Pack
+      summary: Create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Test FoodPack 1
+                restaurantId: 5add676d-e1f1-4ead-af69-71ff4d28c2ad
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Food Pack
+      summary: Get Foodpacks
+      description: >-
+        Gets information about a collection. For a complete list of this
+        endpoint's possible values, use the [collection.json schema
+        file](https://schema.postman.com/json/collection/v2.1.0/collection.json).
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /foodpacks/top-voted:
+    get:
+      tags:
+        - Food Pack
+      summary: Top Voted
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /Meals:
+    post:
+      tags:
+        - Meal
+      summary: Create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Test Meal 1
+                price: 200
+                foodPackId: f2d73389-8154-4f74-9f0f-d62f8febf5c2
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /votes:
+    post:
+      tags:
+        - Vote
+      summary: Create Vote
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                employeeId: 6b9a4ba3-d8a2-4bf2-9d89-f0a1b8635b4d
+                foodPackId: d6709556-3425-4e74-9380-715e30acfdac
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Vote
+      summary: Get Vote
+      parameters:
+        - name: employeeId
+          in: query
+          schema:
+            type: string
+          example: 9807a2ab-9866-432b-91b6-9f30b78babfe
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /votes/top-voted:
+    get:
+      tags:
+        - Vote
+      summary: Top Voted Per Day
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /votes/ebb566e9-8a51-4848-ba13-5b10687f27f1:
+    delete:
+      tags:
+        - Vote
+      summary: Remove Vote
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /employees:
+    post:
+      tags:
+        - Employee
+      summary: Create Employee
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Test2
+                phone: '111112'
+                password: '111112'
+                designation: SoftWare Developer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /employees/login:
+    post:
+      tags:
+        - Employee
+      summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                phone: '111112'
+                password: '111112'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
